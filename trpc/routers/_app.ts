@@ -1,10 +1,17 @@
 import { inngest } from "@/inngest/client";
 import { createTRPCRouter, protectedProcedure } from "../init";
 import db from "@/lib/database";
+import { TRPCError } from "@trpc/server";
+
 export const appRouter = createTRPCRouter({
+  testAI: protectedProcedure.mutation(async ({ ctx }) => {
+    await inngest.send({
+      name: "execute/ai",
+    });
+    return { success: true, message: "AI queued" };
+  }),
   getWorkflows: protectedProcedure.query(async ({ ctx }) => {
-    const data = db.workflow.findMany({});
-    return { success: true, message: "Workflows fetched", data };
+    return db.workflow.findMany({});
   }),
   createWorkflow: protectedProcedure.mutation(async ({ ctx }) => {
     await inngest.send({
