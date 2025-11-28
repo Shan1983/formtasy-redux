@@ -2,8 +2,9 @@ import { inngest } from "@/inngest/client";
 import { createTRPCRouter, protectedProcedure } from "../init";
 import db from "@/lib/database";
 export const appRouter = createTRPCRouter({
-  getWorkflows: protectedProcedure.query(({ ctx }) => {
-    return db.workflow.findMany({});
+  getWorkflows: protectedProcedure.query(async ({ ctx }) => {
+    const data = db.workflow.findMany({});
+    return { success: true, message: "Workflows fetched", data };
   }),
   createWorkflow: protectedProcedure.mutation(async ({ ctx }) => {
     await inngest.send({
