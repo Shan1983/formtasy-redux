@@ -12,10 +12,24 @@ const Page = () => {
 
   const { data } = useQuery(trpc.getWorkflows.queryOptions());
 
+  const testLocalAI = useMutation(
+    trpc.testAI.mutationOptions({
+      onSuccess: () => {
+        toast.success("AI queued");
+      },
+      onError: () => {
+        toast.error("AI failed");
+      },
+    })
+  );
+
   const create = useMutation(
     trpc.createWorkflow.mutationOptions({
       onSuccess: () => {
         toast.success("Workflow queued");
+      },
+      onError: () => {
+        toast.error("Workflow failed");
       },
     })
   );
@@ -25,6 +39,12 @@ const Page = () => {
       Protected {JSON.stringify(data, null, 2)}
       <Button disabled={create.isPending} onClick={() => create.mutate()}>
         Create Workflow
+      </Button>
+      <Button
+        disabled={testLocalAI.isPending}
+        onClick={() => testLocalAI.mutate()}
+      >
+        Test local AI
       </Button>
       <LogoutButton />
     </div>
