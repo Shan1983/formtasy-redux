@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   AppWindowMacIcon,
+  CrownIcon,
   DatabaseIcon,
   FolderOpenIcon,
   FormIcon,
@@ -12,7 +13,6 @@ import {
   KeyIcon,
   LayoutListIcon,
   LogOutIcon,
-  StarIcon,
   User2Icon,
   WaypointsIcon,
 } from "lucide-react";
@@ -28,6 +28,7 @@ import {
   SidebarMenuItem,
 } from "./ui/sidebar";
 import { authClient } from "@/lib/auth/auth-client";
+import { Badge } from "./ui/badge";
 
 const menuItems = [
   {
@@ -83,14 +84,14 @@ const AppSidebar = () => {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
+      <SidebarHeader className="bg-background">
         <SidebarMenuItem>
-          <SidebarMenuButton asChild className="gap-x-4 h-10 px-4">
+          <SidebarMenuButton asChild className="gap-x-2 h-10 px-4">
             <Link
               href="/"
-              className="flex items-center gap-2 self-center font-medium"
+              className="flex items-center self-center font-medium"
             >
-              <WaypointsIcon className="size-8" />
+              <WaypointsIcon className="size-6" />
               <span>
                 Formtasy<span className="text-muted-foreground/50">:</span>
                 <span className="text-red-600">Redux</span>
@@ -99,7 +100,7 @@ const AppSidebar = () => {
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-background">
         {menuItems.map((group) => (
           <SidebarGroup key={group.title}>
             <SidebarGroupContent>
@@ -128,22 +129,27 @@ const AppSidebar = () => {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="bg-background">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip={"Upgrade to Pro"}
-              className="gap-x-4 h-10 px-4"
+              className="gap-x-2 h-10 px-4"
               onClick={() => {}}
             >
-              <StarIcon className="size-4" />
-              <span className="">Upgrade to PRO</span>
+              <CrownIcon className="size-4" />
+              <span className="">
+                Upgrade to{" "}
+                <Badge variant={"pro"} className="font-bold">
+                  Pro
+                </Badge>
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip={"Billing portal"}
-              className="gap-x-4 h-10 px-4"
+              className="gap-x-2 h-10 px-4"
               onClick={() => {}}
             >
               <User2Icon className="size-4" />
@@ -153,7 +159,7 @@ const AppSidebar = () => {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip={"Signout"}
-              className="gap-x-4 h-10 px-4"
+              className="gap-x-2 h-10 px-4"
               onClick={() =>
                 authClient.signOut({
                   fetchOptions: {
