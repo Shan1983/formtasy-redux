@@ -8,6 +8,7 @@ import {
   MoreVerticalIcon,
   Trash2Icon,
   FilePlusCornerIcon,
+  PencilIcon,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -30,6 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Badge } from "./ui/badge";
 
 type CoreHeaderProps = {
   title: string;
@@ -177,7 +179,7 @@ export const CoreContainer = ({
         {header}
         <div className="flex flex-col gap-y-4 h-full">
           {search}
-          <Separator className="w-full" />
+
           {children}
         </div>
         {pagination}
@@ -210,9 +212,7 @@ export const ErrorView = ({ message }: StateViewProps) => {
     <div className="flex justify-center items-center h-full flex-1 flex-col gap-y-4">
       <AlertTriangleIcon className="size-6 text-primary" />
       {!!message && (
-        <p className="text-sm text-muted-foreground">
-          {message || `Loading...`}
-        </p>
+        <p className="text-sm text-muted-foreground">{message || `Error...`}</p>
       )}
     </div>
   );
@@ -325,7 +325,7 @@ export const CoreItem = ({
       >
         <CardContent className="flex flex-row items-center justify-between p-0">
           <div className="flex items-center gap-3">
-            {image}
+            <div className="bg-muted p-4 rounded">{image}</div>
             <div>
               <CardTitle className="text-base font-medium">{title}</CardTitle>
               {!!subTitle && (
@@ -337,6 +337,10 @@ export const CoreItem = ({
           </div>
           {(actions || onRemove) && (
             <div className="flex gap-x-4 items-center">
+              <div className="">
+                {/* TODO: list the nodes in the flow */}
+                <Badge variant="default">Default</Badge>
+              </div>
               {actions}
               {onRemove && (
                 <DropdownMenu>
@@ -353,6 +357,10 @@ export const CoreItem = ({
                     align="end"
                     onClick={(e) => e.stopPropagation()}
                   >
+                    <DropdownMenuItem onClick={handleRemove}>
+                      <PencilIcon className="size-4" />
+                      Rename
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleRemove}>
                       <Trash2Icon className="size-4" />
                       Delete
