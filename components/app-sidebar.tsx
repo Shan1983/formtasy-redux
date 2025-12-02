@@ -15,6 +15,7 @@ import {
   LogOutIcon,
   User2Icon,
   WaypointsIcon,
+  ZapIcon,
 } from "lucide-react";
 import {
   Sidebar,
@@ -28,7 +29,6 @@ import {
   SidebarMenuItem,
 } from "./ui/sidebar";
 import { authClient } from "@/lib/auth/auth-client";
-import { Badge } from "./ui/badge";
 
 const menuItems = [
   {
@@ -53,6 +53,11 @@ const menuItems = [
         title: "Submissions",
         icon: LayoutListIcon,
         url: "/submissions",
+      },
+      {
+        title: "Integrations",
+        icon: ZapIcon,
+        url: "/integrations",
       },
       {
         title: "Data",
@@ -137,13 +142,8 @@ const AppSidebar = () => {
               className="gap-x-2 h-10 px-4"
               onClick={() => {}}
             >
-              <CrownIcon className="size-4" />
-              <span className="">
-                Upgrade to{" "}
-                <Badge variant={"pro"} className="font-bold">
-                  Pro
-                </Badge>
-              </span>
+              <CrownIcon className="size-4 text-indigo-500" />
+              <span>Upgrade to Pro</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
