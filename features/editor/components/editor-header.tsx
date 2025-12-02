@@ -14,14 +14,37 @@ import {
 } from "@/components/ui/breadcrumb";
 import {
   useSuspenseWorkflow,
+  useUpdateWorkflow,
   useUpdateWorkflowName,
 } from "@/features/workflows/hooks/use-workflows";
 import { Input } from "@/components/ui/input";
+import { useAtomValue } from "jotai";
+import { editorAtom } from "../store/atoms";
 
 export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
+  const editor = useAtomValue(editorAtom);
+  const saveWorkflow = useUpdateWorkflow();
+
+  const handleSave = () => {
+    if (!editor) return;
+
+    const nodes = editor.getNodes();
+    const edges = editor.getEdges();
+
+    saveWorkflow.mutate({
+      id: workflowId,
+      nodes,
+      edges,
+    });
+  };
+
+  if (saveWorkflow.isPending) {
+    return;
+  }
+
   return (
     <div className="ml-auto">
-      <Button size="sm" onClick={() => {}} disabled={false}>
+      <Button size="sm" onClick={handleSave} disabled={saveWorkflow.isPending}>
         <SaveIcon className="size-4" />
         Save
       </Button>
@@ -34,7 +57,7 @@ export const EditorBreadcrumbs = ({ workflowId }: { workflowId: string }) => {
     <Breadcrumb className="w-full">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
+          <BreadcrumbLink asChild className="text-primary">
             <Link href="/workflows" prefetch>
               Workflows
             </Link>
@@ -112,7 +135,7 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
   return (
     <BreadcrumbItem
       onClick={() => setIsEditing(true)}
-      className="cursor-pointer hover:text-foreground transition-colors"
+      className="cursor-pointer hover:text-foreground transition-colors text-primary"
     >
       {workflow.name}
     </BreadcrumbItem>
@@ -121,7 +144,7 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
 
 const EditorHeader = ({ workflowId }: { workflowId: string }) => {
   return (
-    <header className="flex h-14 shrink-0 items-center gap-2 border-b px-2 bg-background">
+    <header className="flex h-14 shrink-0 items-center gap-2 px-2">
       <SidebarTrigger />
       <div className="flex flex-row items-center justify-between gap-x-3 w-full">
         <EditorBreadcrumbs workflowId={workflowId} />

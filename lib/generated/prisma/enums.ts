@@ -10,7 +10,9 @@
 */
 
 export const NodeType = {
-  INITIAL: 'INITIAL'
+  INITIAL: 'INITIAL',
+  MANUAL_TRIGGER: 'MANUAL_TRIGGER',
+  HTTP_REQUEST_EVENT: 'HTTP_REQUEST_EVENT'
 } as const
 
 export type NodeType = (typeof NodeType)[keyof typeof NodeType]

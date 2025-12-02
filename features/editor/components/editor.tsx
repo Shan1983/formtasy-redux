@@ -11,7 +11,6 @@ import {
   type NodeChange,
   type EdgeChange,
   type Connection,
-  Background,
   MiniMap,
   Panel,
 } from "@xyflow/react";
@@ -20,6 +19,8 @@ import { nodeComponents } from "@/config/node-components";
 import { FlowControls } from "./flow-controls";
 import { ErrorView, LoadingView } from "@/components/core-components";
 import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflows";
+import { editorAtom } from "../store/atoms";
+import { useSetAtom } from "jotai";
 
 export const EditorLoading = () => {
   return <LoadingView message="Loading editor..." />;
@@ -31,6 +32,7 @@ export const EditorError = () => {
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow(workflowId);
+  const setEditor = useSetAtom(editorAtom);
 
   const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
   const [edges, setEdges] = useState<Edge[]>(workflow.edges);
@@ -67,9 +69,15 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         fitView
         proOptions={{ hideAttribution: true }}
         nodeTypes={nodeComponents}
+        onInit={setEditor}
+        snapGrid={[10, 10]}
+        snapToGrid
+        panOnScroll
+        panOnDrag={false}
+        selectionOnDrag
       >
         {showMiniMap ? <MiniMap /> : null}
-        <Panel position="bottom-center">
+        <Panel position="top-right">
           <FlowControls
             showMiniMap={showMiniMap}
             onToggleMiniMap={toggleMiniMap}
